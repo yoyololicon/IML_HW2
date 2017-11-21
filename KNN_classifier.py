@@ -13,3 +13,4 @@ if __name__ == '__main__':
     total_train = np.squeeze(train_index[-1]+1)
     total_test = np.squeeze(test_index[-1]+1)
     print total_test, total_train
+
