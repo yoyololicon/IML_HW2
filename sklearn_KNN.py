@@ -40,6 +40,7 @@ def main():
 
     for N in Test_N:
         dist, ind = root.query(test_value, k=N)
+        #print train_value[ind]
         print 'KNN accuracy: ', accuracy(train_class[ind], test_class)
         for i in range(3):
             print ' '.join(map(str, ind[i]))
