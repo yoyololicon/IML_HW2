@@ -15,7 +15,6 @@ def evaluate(nearests, label):
         return False
 
 def accuracy(x, t):
-    #print x.shape, t.shape
     m = len(x)
     v = 0
     for i in range(m):
@@ -40,7 +39,6 @@ def main():
 
     for N in Test_N:
         dist, ind = root.query(test_value, k=N)
-        #print train_value[ind]
         print 'KNN accuracy: ', accuracy(train_class[ind], test_class)
         for i in range(3):
             print ' '.join(map(str, ind[i]))
