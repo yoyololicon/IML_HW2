@@ -43,7 +43,7 @@ def main():
         print 'KNN accuracy: ', accuracy(train_class[ind], test_class)
         for i in range(3):
             print ' '.join(map(str, ind[i]))
-        print '\n'
+        print ''
 
 
 if __name__ == '__main__':
