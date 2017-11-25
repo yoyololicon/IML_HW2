@@ -43,7 +43,7 @@ def main():
         if i == 1:
             colors = cm.rainbow(np.power(np.linspace(0, 1, len(classname)), 0.6))
             for k, n, c in zip(class_ind, classname, colors):
-                plt.scatter(tranformed[k, 0], tranformed[k, 1], s=50, color=c, label=n)
+                plt.scatter(tranformed[k, 0], tranformed[k, 1], s=80, color=c, label=n)
             plt.legend()
             plt.xlabel('eigenvalue %f' % eig_pairs[0][0])
             plt.ylabel('eigenvalue %f' % eig_pairs[1][0])
