@@ -2,8 +2,11 @@ import pandas as pd
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import KNN_classifier as KNN
 import sklearn_KNN
+
+classname = ['cp', 'im', 'pp', 'imU', 'om', 'omL', 'inL', 'imS']
 
 def main():
     if len(sys.argv) < 3:
@@ -19,13 +22,18 @@ def main():
     Test_N = [1, 5, 10, 100]
     D = train_value.shape[1]
 
-    cov = np.cov(train_value.T.astype(float))
+    class_ind = [np.argwhere(train_class == c) for c in classname]
 
+    #compute covariance
+    cov = np.cov(train_value.T.astype(float))
+    #compute the eigenvetor and sort them based on eigenvalue
     va, ve = np.linalg.eig(cov)
     eig_pairs = [(va[i], ve[:, i]) for i in range(len(va))]
     eig_pairs.sort(key=lambda x: x[0], reverse=True)
 
-    for i in range(len(eig_pairs)-1):
+    accuracy = []
+    for i in range(len(eig_pairs)):
+        #using different number of eigenvector
         W = np.empty([i+1, D])
         for j in range(i+1):
             W[j] = eig_pairs[j][1]
@@ -33,23 +41,34 @@ def main():
         tranformed = W.dot(train_value.T).T
 
         if i == 1:
-            plt.scatter(tranformed[:, 0], tranformed[:, 1])
+            colors = cm.rainbow(np.power(np.linspace(0, 1, len(classname)), 0.6))
+            for k, n, c in zip(class_ind, classname, colors):
+                plt.scatter(tranformed[k, 0], tranformed[k, 1], s=50, color=c, label=n)
+            plt.legend()
+            plt.xlabel('eigenvalue %f' % eig_pairs[0][0])
+            plt.ylabel('eigenvalue %f' % eig_pairs[1][0])
             plt.show()
 
         root = KNN.KDTree(np.concatenate((train_index, tranformed), axis=1), tranformed.shape[1])
 
         tranformed_t = W.dot(test_value.T).T
         print ' "', i+1, 'Dimension"'
+
+        alist = []
         for N in Test_N:
             ind = []
             for i in range(total_test):
                 result = KNN.KNN_hyperplane(root, tranformed_t[i], N)
                 ind.append(result)
-            print 'KNN accuracy: ', sklearn_KNN.accuracy(train_class[ind], test_class)
+            alist.append(sklearn_KNN.accuracy(train_class[ind], test_class))
+            print 'KNN accuracy: ', alist[-1]
             for i in range(3):
                 print ' '.join(map(str, ind[i]))
             print ''
+        accuracy.append(np.mean(alist))
 
+    MAP = np.argmax(accuracy)
+    print 'the most efficient data dimension is', MAP+1
 
 if __name__ == '__main__':
     main()
