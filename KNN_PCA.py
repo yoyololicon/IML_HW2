@@ -2,7 +2,6 @@ import pandas as pd
 import sys
 import numpy as np
 import KNN_classifier as KNN
-import sklearn_KNN
 
 classname = ['cp', 'im', 'pp', 'imU', 'om', 'omL', 'inL', 'imS']
 
@@ -49,7 +48,7 @@ def main():
             for i in range(total_test):
                 result = KNN.KNN_hyperplane(root, tranformed_t[i], N)
                 ind.append(result)
-            alist.append(sklearn_KNN.accuracy(train_class[ind], test_class))
+            alist.append(KNN.accuracy(train_class[ind], test_class))
         accuracy.append(np.mean(alist))
         best_k5.append(alist[1])
 

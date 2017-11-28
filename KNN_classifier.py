@@ -1,9 +1,26 @@
 import pandas as pd
 import sys
 import numpy as np
-from collections import namedtuple
+from collections import namedtuple, Counter
 from pprint import pformat
-import sklearn_KNN
+
+def evaluate(nearests, label):
+    if len(nearests.shape) < 1:
+        t = nearests
+    else:
+        t = Counter(nearests).most_common(1)[0][0]
+    if t == label:
+        return True
+    else:
+        return False
+
+def accuracy(x, t):
+    m = len(x)
+    v = 0
+    for i in range(m):
+        if evaluate(np.squeeze(x[i]), np.squeeze(t[i])):
+            v+=1
+    return float(v)/m
 
 def euclidean_dist(a, b):
     return np.sqrt(np.sum((a-b) ** 2))
@@ -112,7 +129,7 @@ def main():
         for i in range(total_test):
             result = KNN_hyperplane(root, test_value[i], N)
             ind.append(result)
-        print 'KNN accuracy:', sklearn_KNN.accuracy(train_class[ind], test_class)
+        print 'KNN accuracy:', accuracy(train_class[ind], test_class)
         for i in range(3):
             print ' '.join(map(str, ind[i]))
         print ''
