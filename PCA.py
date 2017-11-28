@@ -61,7 +61,7 @@ def main():
                 result = KNN.KNN_hyperplane(root, tranformed_t[i], N)
                 ind.append(result)
             alist.append(sklearn_KNN.accuracy(train_class[ind], test_class))
-            print 'KNN accuracy: ', alist[-1]
+            print 'KNN accuracy:', alist[-1]
             for i in range(3):
                 print ' '.join(map(str, ind[i]))
             print ''

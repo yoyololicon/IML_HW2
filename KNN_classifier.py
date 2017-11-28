@@ -112,7 +112,7 @@ def main():
         for i in range(total_test):
             result = KNN_hyperplane(root, test_value[i], N)
             ind.append(result)
-        print 'KNN accuracy: ', sklearn_KNN.accuracy(train_class[ind], test_class)
+        print 'KNN accuracy:', sklearn_KNN.accuracy(train_class[ind], test_class)
         for i in range(3):
             print ' '.join(map(str, ind[i]))
         print ''
